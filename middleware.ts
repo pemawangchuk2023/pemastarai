@@ -11,9 +11,9 @@ export default authMiddleware({
     '/community',
     '/jobs',
   ],
-  ignoredRoutes: ['/api/webhook', '/api/chatgpt, /api/jobs'],
+  ignoredRoutes: ['/api/webhook', '/api/chatgpt'],
 });
 
 export const config = {
-  matcher: ['/((?!.+\\.[\\w]+$|_next).*)', '/', '/(api|trpc)(.*)'],
+  matcher: ['/((?!.*\\..*|_next).*)', '/', '/(api|trpc)(.*)'],
 };
