@@ -21,7 +21,7 @@ export async function getUserById(params: any) {
     return user;
   } catch (error) {
     console.log(error);
-    throw error;
+    console.error('Error in getUserById:', error);
   }
 }
 
