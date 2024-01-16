@@ -3,12 +3,12 @@ export default authMiddleware({
   publicRoutes: [
     '/',
     '/api/webhook/route',
-    'question/:id',
-    '/tags',
-    '/tags/:id',
-    '/profile/:id',
-    '/community',
-    '/jobs',
+    // 'question/:id',
+    // '/tags',
+    // '/tags/:id',
+    // '/profile/:id',
+    // '/community',
+    // '/jobs',
   ],
   ignoredRoutes: ['/api/webhook/route', '/api/chatgpt'],
 });
