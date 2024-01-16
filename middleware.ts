@@ -1,3 +1,4 @@
+// Todo: Add routes
 import { authMiddleware } from '@clerk/nextjs';
 
 export default authMiddleware();
