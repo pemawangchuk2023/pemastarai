@@ -11,7 +11,7 @@ const HomeFilters = () => {
         <Button
           key={item.value}
           onClick={() => {}}
-          className={`body-medium rounded-lg px-6 py-3 capitalize shadow-none
+          className={`body-medium rounded-lg px-4 py-3 capitalize shadow-none
           ${
             active === item.value
               ? 'bg-primary-100 text-primary-500'
