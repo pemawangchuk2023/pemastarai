@@ -2,12 +2,10 @@
 import { Webhook } from 'svix';
 import { headers } from 'next/headers';
 import { WebhookEvent } from '@clerk/nextjs/server';
-import { createUser, updateUser } from '@/lib/actions/user.action';
+import { createUser, deleteUser, updateUser } from '@/lib/actions/user.action';
 import { NextResponse } from 'next/server';
 
 export async function POST(req: Request) {
-  console.log('Webhook ran on vercel');
-
   // You can find this in the Clerk Dashboard -> Webhooks -> choose the webhook
   const WEBHOOK_SECRET = process.env.NEXT_CLERK_WEBHOOK_SECRET;
 
@@ -34,7 +32,7 @@ export async function POST(req: Request) {
   const payload = await req.json();
   const body = JSON.stringify(payload);
 
-  // Create a new Svix instance with your secret.
+  // Create a new SVIX instance with your secret.
   const wh = new Webhook(WEBHOOK_SECRET);
 
   let evt: WebhookEvent;
@@ -53,12 +51,9 @@ export async function POST(req: Request) {
     });
   }
 
-  // Get the ID and type
-  const { id } = evt.data;
   const eventType = evt.type;
 
-  console.log(`Webhook with and ID of ${id} and type of ${eventType}`);
-  console.log('Webhook body:', body);
+  console.log({ eventType });
 
   if (eventType === 'user.created') {
     const { id, email_addresses, image_url, username, first_name, last_name } =
@@ -80,9 +75,9 @@ export async function POST(req: Request) {
     const { id, email_addresses, image_url, username, first_name, last_name } =
       evt.data;
 
-    // Update a user in your database
+    // Create a new user in your database
     const mongoUser = await updateUser({
-      clerkId: id,
+      clerkId: id!,
       updateData: {
         name: `${first_name}${last_name ? ` ${last_name}` : ''}`,
         username: username!,
@@ -95,5 +90,15 @@ export async function POST(req: Request) {
     return NextResponse.json({ message: 'OK', user: mongoUser });
   }
 
-  return new Response('', { status: 200 });
+  if (eventType === 'user.deleted') {
+    const { id } = evt.data;
+
+    const deletedUser = await deleteUser({
+      clerkId: id!,
+    });
+
+    return NextResponse.json({ message: 'OK', user: deletedUser });
+  }
+
+  return NextResponse.json({ message: 'OK' });
 }
