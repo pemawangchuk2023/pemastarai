@@ -1,30 +1,24 @@
 import QuestionCard from '@/components/cards/QuestionCard';
-import HomeFilters from '@/components/home/HomeFilters';
 import Filters from '@/components/shared/Filters';
 import NoResult from '@/components/shared/NoResult';
 import LocalSearchbar from '@/components/shared/search/LocalSearchbar';
-import { Button } from '@/components/ui/button';
-import { HomePageFilters } from '@/constants/filters';
-import { getQuestions } from '@/lib/actions/question.action';
-import Link from 'next/link';
-import React from 'react';
+import { QuestionFilters } from '@/constants/filters';
+import { getSavedQuestions } from '@/lib/actions/user.action';
+import { auth } from '@clerk/nextjs';
 
-const Home = async () => {
-  const result = await getQuestions({});
+const Collection = async () => {
+  const { userId } = auth();
+
+  if (!userId) return null;
+
+  const result = await getSavedQuestions({
+    clerkId: userId,
+  });
 
   return (
     <>
-      <div className='flex w-full flex-col-reverse justify-between gap-4 sm:flex-row sm:items-center'>
-        <h1 className='h1-bold text-dark100_light900'>All Questions</h1>
-        <Link
-          href='/ask-question'
-          className='flex justify-end max-sm:w-full'
-        >
-          <Button className='bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 w-fit hover:to-blue-800 text-white font-bold py-7 px-8 rounded-full shadow-lg transform transition-all duration-500 ease-in-out hover:scale-110 hover:brightness-110 hover:animate-pulse active:animate-bounce'>
-            Ask a Question
-          </Button>
-        </Link>
-      </div>
+      <h1 className='h1-bold text-dark100_light900'>Saved Questions</h1>
+
       <div className='mt-11 flex justify-between gap-5 max-sm:flex-col sm:items-center'>
         <LocalSearchbar
           route='/'
@@ -34,15 +28,14 @@ const Home = async () => {
           otherClasses='flex-1'
         />
         <Filters
-          filters={HomePageFilters}
+          filters={QuestionFilters}
           otherClasses='min-h-[56px] sm:min-w-[170px]'
-          containerClasses='hidden max-md:flex'
         />
       </div>
-      <HomeFilters />
+
       <div className='mt-10 flex w-full flex-col gap-6'>
         {result.questions.length > 0 ? (
-          result.questions.map((question) => (
+          result.questions.map((question: any) => (
             <QuestionCard
               key={question._id}
               _id={question._id}
@@ -57,7 +50,7 @@ const Home = async () => {
           ))
         ) : (
           <NoResult
-            title='There is no question to show'
+            title='There is no question saved to show'
             description='Be the first to break the silence! 🚀 Ask a Question and kickstart the
         discussion. our query could be the next big thing others learn from. Get
         involved! 💡'
@@ -70,4 +63,4 @@ const Home = async () => {
   );
 };
 
-export default Home;
+export default Collection;

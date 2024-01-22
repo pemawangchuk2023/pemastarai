@@ -2,6 +2,7 @@ import { ClerkProvider } from '@clerk/nextjs';
 import React from 'react';
 import { Inter } from 'next/font/google';
 import './globals.css';
+import '../styles/prism.css';
 
 import type { Metadata } from 'next';
 import { ThemeProvider } from '@/context/ThemeProvider';

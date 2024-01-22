@@ -20,6 +20,7 @@ import { questionSchema } from '@/lib/validations';
 import { Badge } from '../ui/badge';
 import Image from 'next/image';
 import { createQuestion } from '@/lib/actions/question.action';
+import { useTheme } from '@/context/ThemeProvider';
 const type: any = 'create';
 
 interface Props {
@@ -27,6 +28,7 @@ interface Props {
 }
 
 const Question = ({ mongoUserId }: Props) => {
+  const { mode } = useTheme();
   const router = useRouter();
   const pathname = usePathname();
   const editorRef = useRef(null);
@@ -165,6 +167,8 @@ const Question = ({ mongoUserId }: Props) => {
                       'codesample | bold italic forecolor | alignleft aligncenter |' +
                       'alignright alignjustify | bullist numlist',
                     content_style: 'body { font-family:Inter; font-size:18px }',
+                    skin: mode === 'dark' ? 'oxide-dark' : 'oxide',
+                    content_css: mode === 'dark' ? 'dark' : 'light',
                   }}
                 />
               </FormControl>
@@ -172,7 +176,7 @@ const Question = ({ mongoUserId }: Props) => {
                 Present the issue and elaborate on the title&apos;s content.
                 Must exceed a minimum of 20 characters.
               </FormDescription>
-              <FormMessage />
+              <FormMessage className='text-red-500' />
             </FormItem>
           )}
         />
@@ -215,17 +219,13 @@ const Question = ({ mongoUserId }: Props) => {
                   )}
                 </>
               </FormControl>
-              <FormDescription className='body-regular mt-3.5 text-light-500'>
-                Please enter up to 3 tags that best encapsulate the subject of
-                your question. Press enter after each tag to add them.
-              </FormDescription>
-              <FormMessage />
+              <FormMessage className='text-red-500' />
             </FormItem>
           )}
         />
         <Button
           type='submit'
-          className='primary-gradient w-fit !text-light-900'
+          className='bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 w-fit hover:to-blue-800 text-white font-bold py-7 px-8 rounded-full shadow-lg transform transition-all duration-500 ease-in-out hover:scale-110 hover:brightness-110 hover:animate-pulse active:animate-bounce'
           disabled={isSubmitting}
         >
           {isSubmitting ? (
