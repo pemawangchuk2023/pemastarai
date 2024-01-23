@@ -5,6 +5,8 @@ import { SignedIn, auth } from '@clerk/nextjs';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+
+import React from 'react';
 import { getJoinedDate } from '@/lib/utils';
 import ProfileLink from '@/components/shared/ProfileLink';
 import QuestionTab from '@/components/shared/QuestionTab';
@@ -76,7 +78,6 @@ const Page = async ({ params, searchParams }: URLProps) => {
           </SignedIn>
         </div>
       </div>
-      Stats
       <div className='mt-10 flex gap-10'>
         <Tabs
           defaultValue='top-posts'
@@ -87,7 +88,7 @@ const Page = async ({ params, searchParams }: URLProps) => {
               value='top-posts'
               className='tab'
             >
-              Questions
+              Top Posts
             </TabsTrigger>
             <TabsTrigger
               value='answers'

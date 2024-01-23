@@ -3,16 +3,14 @@ import { deleteAnswer } from '@/lib/actions/answer.action';
 import { deleteQuestion } from '@/lib/actions/question.action';
 import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
-
+import React from 'react';
 interface Props {
   type: string;
   itemId: string;
 }
-
 const EditDeleteAction = ({ type, itemId }: Props) => {
   const pathname = usePathname();
   const router = useRouter();
-
   const handleEdit = () => {
     router.push(`/question/edit/${JSON.parse(itemId)}`);
   };
@@ -31,11 +29,11 @@ const EditDeleteAction = ({ type, itemId }: Props) => {
     }
   };
   return (
-    <div className='flex items-center justify-end gap-3 max-sm:w-full'>
+    <div className='flex justify-end gap-3 max-sm:w-full'>
       {type === 'Question' && (
         <Image
           src='/assets/icons/edit.svg'
-          alt='Edit'
+          alt='edit'
           width={14}
           height={14}
           className='cursor-pointer object-contain'
