@@ -11,9 +11,11 @@ import { getJoinedDate } from '@/lib/utils';
 import ProfileLink from '@/components/shared/ProfileLink';
 import QuestionTab from '@/components/shared/QuestionTab';
 import AnswersTab from '@/components/shared/AnswersTab';
+import Stats from '@/components/shared/Stats';
 
 const Page = async ({ params, searchParams }: URLProps) => {
   const { userId: clerkId } = auth();
+  console.log('clerkId in Page component:', clerkId);
   const userInfo = await getUserInfo({ userId: params.id });
 
   return (
@@ -78,6 +80,12 @@ const Page = async ({ params, searchParams }: URLProps) => {
           </SignedIn>
         </div>
       </div>
+      <Stats
+        reputation={userInfo.reputation}
+        totalQuestions={userInfo.totalQuestions}
+        totalAnswers={userInfo.totalAnswers}
+        badges={userInfo.badgeCounts}
+      />
       <div className='mt-10 flex gap-10'>
         <Tabs
           defaultValue='top-posts'

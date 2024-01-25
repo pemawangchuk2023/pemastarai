@@ -80,7 +80,7 @@ const MobileNav = () => {
             alt='PemaAI'
           />
           <p className='h2-bold text-dark-100_light900 font-spaceGrotesk dark:text-light-900 max-sm:hidden'>
-            Pema <span className='text-primary-500'>FalconAI</span>
+            Pema <span className='text-primary-500'>Falcon</span>
           </p>
         </Link>
         <div>

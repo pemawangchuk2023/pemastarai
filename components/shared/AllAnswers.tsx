@@ -1,21 +1,22 @@
-import { AnswerFilters } from '@/constants/filters';
 import React from 'react';
-import Filters from './Filters';
+import Filter from './Filters';
+import { AnswerFilters } from '@/constants/filters';
 import { getAnswers } from '@/lib/actions/answer.action';
 import Link from 'next/link';
 import Image from 'next/image';
 import { getTimestamp } from '@/lib/utils';
 import ParseHTML from './ParseHTML';
 import Votes from './Votes';
+import Pagination from './Pagination';
 
 interface Props {
   questionId: string;
   userId: string;
   totalAnswers: number;
   page?: number;
-  filter?: number;
+  filter?: string;
 }
-const AllAnswers = async ({
+const AllAnswer = async ({
   questionId,
   userId,
   totalAnswers,
@@ -24,13 +25,16 @@ const AllAnswers = async ({
 }: Props) => {
   const result = await getAnswers({
     questionId,
+    page: page ? +page : 1,
+    sortBy: filter,
   });
   return (
     <div className='mt-11'>
       <div className='flex items-center justify-between'>
         <h3 className='primary-text-gradient'>{totalAnswers} Answers</h3>
-        <Filters filters={AnswerFilters} />
+        <Filter filters={AnswerFilters} />
       </div>
+
       <div>
         {result.answers.map((answer) => (
           <article
@@ -76,8 +80,14 @@ const AllAnswers = async ({
           </article>
         ))}
       </div>
+      <div className='mt-10 w-full'>
+        <Pagination
+          pageNumber={page ? +page : 1}
+          isNext={result.isNextAnswer}
+        />
+      </div>
     </div>
   );
 };
 
-export default AllAnswers;
+export default AllAnswer;

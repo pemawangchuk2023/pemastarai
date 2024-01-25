@@ -24,7 +24,7 @@ const Navbar = () => {
           alt='FalconAI'
         />
         <p className='h2-bold font-spaceGrotesk text-dark-100 dark:text-light-900 max-sm:hidden'>
-          Pema <span className='text-primary-500'>Falcon AI</span>
+          Pema <span className='text-primary-500'>Falcon</span>
         </p>
       </Link>
       <GlobalSearch />

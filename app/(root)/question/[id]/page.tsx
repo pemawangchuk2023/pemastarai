@@ -54,12 +54,12 @@ const page = async ({ params, searchParams }: any) => {
             />
           </div>
         </div>
-        <h2 className='-3.5'>{result.title}</h2>
+        <h2 className='mt-3.5'>{result.title}</h2>
       </div>
       <div className='mb-8 mt-5 flex flex-wrap gap-4'>
         <Metric
           imgUrl='/assets/icons/like.svg'
-          alt='clock icon'
+          alt='clock ccon'
           value={` asked ${getTimestamp(result.createdAt)}`}
           title=' Asked'
           textStyles='small-medium text-dark400_light800'
@@ -76,7 +76,7 @@ const page = async ({ params, searchParams }: any) => {
           alt='eye'
           value={formatAndDivideNumber(result.views)}
           title=' Views'
-          textStyles=''
+          textStyles='small-medium text-dark400_light800'
         />
       </div>
       <ParseHTML data={result.content} />
@@ -94,6 +94,8 @@ const page = async ({ params, searchParams }: any) => {
         questionId={result._id}
         userId={mongoUser._id}
         totalAnswers={result.answers.length}
+        page={searchParams?.page}
+        filter={searchParams?.filter}
       />
       <Answer
         question={result.content}

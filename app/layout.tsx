@@ -20,7 +20,7 @@ const spaceGrotesk = Inter({
 
 export const metadata: Metadata = {
   title: 'NextJS PemaStarAi',
-  description: 'A Community Drive Platform for the accountants',
+  description: 'A Community Drive Platform for the developers',
   icons: {
     icon: '/assets/images/site-logo.svg',
   },

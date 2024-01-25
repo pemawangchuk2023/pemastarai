@@ -1,18 +1,28 @@
 import QuestionCard from '@/components/cards/QuestionCard';
 import Filters from '@/components/shared/Filters';
 import NoResult from '@/components/shared/NoResult';
+import Pagination from '@/components/shared/Pagination';
 import LocalSearchbar from '@/components/shared/search/LocalSearchbar';
 import { QuestionFilters } from '@/constants/filters';
 import { getSavedQuestions } from '@/lib/actions/user.action';
+import { SearchParamsProps } from '@/types';
 import { auth } from '@clerk/nextjs';
 
-const Collection = async () => {
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Collections | PemaStar Community',
+  description: 'PemaStar DevFlow is meant for the Bhutanese developers',
+};
+const Collection = async ({ searchParams }: SearchParamsProps) => {
   const { userId } = auth();
 
   if (!userId) return null;
-
   const result = await getSavedQuestions({
     clerkId: userId,
+    searchQuery: searchParams.q,
+    filter: searchParams.filter,
+    page: searchParams.page ? +searchParams.page : 1,
   });
 
   return (
@@ -58,6 +68,12 @@ const Collection = async () => {
             linkTitle='Ask a Question'
           />
         )}
+      </div>
+      <div className='mt-10'>
+        <Pagination
+          pageNumber={searchParams?.page ? +searchParams.page : 1}
+          isNext={result.isNext}
+        />
       </div>
     </>
   );
