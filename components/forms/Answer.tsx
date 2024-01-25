@@ -1,19 +1,18 @@
 'use client';
-import React, { useRef, useState } from 'react';
+
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormMessage,
 } from '../ui/form';
 import { useForm } from 'react-hook-form';
-
-import { z } from 'zod';
 import { AnswerSchema } from '@/lib/validations';
+import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Editor } from '@tinymce/tinymce-react';
+import { useRef, useState } from 'react';
 import { useTheme } from '@/context/ThemeProvider';
 import { Button } from '../ui/button';
 import Image from 'next/image';
@@ -29,7 +28,8 @@ interface Props {
 const Answer = ({ question, questionId, authorId }: Props) => {
   const pathname = usePathname();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSubmittingAI, setIsSubmittingA] = useState(false);
+  const [isSubmittingAI, setIsSubmittingAI] = useState(false);
+  const { mode } = useTheme();
   const editorRef = useRef(null);
   const form = useForm<z.infer<typeof AnswerSchema>>({
     resolver: zodResolver(AnswerSchema),
@@ -62,9 +62,11 @@ const Answer = ({ question, questionId, authorId }: Props) => {
       setIsSubmitting(false);
     }
   };
+
   const generateAIAnswer = async () => {
     if (!authorId) return;
-    setIsSubmittingA(true);
+
+    setIsSubmittingAI(true);
 
     try {
       const response = await fetch(
@@ -78,24 +80,29 @@ const Answer = ({ question, questionId, authorId }: Props) => {
       const aiAnswer = await response.json();
 
       // Convert plain text to HTML format
+
       const formattedAnswer = aiAnswer.reply.replace(/\n/g, '<br />');
+
       if (editorRef.current) {
         const editor = editorRef.current as any;
         editor.setContent(formattedAnswer);
       }
-      // Toast....
+
+      // Toast...
     } catch (error) {
       console.log(error);
-      setIsSubmittingA(false);
+    } finally {
+      setIsSubmittingAI(false);
     }
   };
-  const { mode } = useTheme();
+
   return (
     <div>
-      <div className='flex flex-col justify-between gap-5 sm:flex-row sm:items-center sm:gap-5'>
-        <h4 className='paragraph-semibold text-text-dark400_light800'>
-          Write Your Answer Here
+      <div className='flex flex-col justify-between gap-5 sm:flex-row sm:items-center sm:gap-2'>
+        <h4 className='paragraph-semibold text-dark400_light800'>
+          Write your answer here
         </h4>
+
         <Button
           className='btn light-border-2 gap-1.5 rounded-md px-4 py-2.5 text-primary-500 shadow-none dark:text-primary-500'
           onClick={generateAIAnswer}
@@ -116,6 +123,7 @@ const Answer = ({ question, questionId, authorId }: Props) => {
           )}
         </Button>
       </div>
+
       <Form {...form}>
         <form
           className='mt-6 flex w-full flex-col gap-10'
@@ -160,20 +168,17 @@ const Answer = ({ question, questionId, authorId }: Props) => {
                         'codesample | bold italic forecolor | alignleft aligncenter |' +
                         'alignright alignjustify | bullist numlist',
                       content_style:
-                        'body { font-family:Inter; font-size:18px }',
+                        'body { font-family:Inter; font-size:16px }',
                       skin: mode === 'dark' ? 'oxide-dark' : 'oxide',
                       content_css: mode === 'dark' ? 'dark' : 'light',
                     }}
                   />
                 </FormControl>
-                <FormDescription className='body-regular mt-3.5 text-light-500'>
-                  Present the issue and elaborate on the title&apos;s content.
-                  Must exceed a minimum of 20 characters.
-                </FormDescription>
                 <FormMessage className='text-red-500' />
               </FormItem>
             )}
           />
+
           <div className='flex justify-end'>
             <Button
               type='submit'
