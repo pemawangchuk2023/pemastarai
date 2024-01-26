@@ -54,7 +54,9 @@ const page = async ({ params, searchParams }: any) => {
             />
           </div>
         </div>
-        <h2 className='mt-3.5'>{result.title}</h2>
+        <h2 className='mt-3.5 h2-semibold text-dark200_light900 w-full text-left'>
+          {result.title}
+        </h2>
       </div>
       <div className='mb-8 mt-5 flex flex-wrap gap-4'>
         <Metric
